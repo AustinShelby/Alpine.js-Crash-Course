@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.2/dist/alpine.min.js"
+      defer
+    ></script>
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="flex w-full justify-center h-screen bg-gray-100 items-start">
+      <div
+        x-data="{
+        continents: ['NA', 'EU', 'AS', 'OC', 'SA', 'AF'],
+        selected: 0,
+        open: false,
+        company: false,
+        price: 3990,
+        vat: 0.2
+    }"
+        class="p-6 rounded shadow-lg bg-white mt-32 flex-shrink"
+      >
+        <label class="block text-gray-800" for="fullname">Full name</label>
+        <input
+          class="block border border-gray-300 rounded mt-2 px-4 py-2 focus:outline-none focus:border-blue-300"
+          type="text"
+          id="fullname"
+        />
+        <label class="mt-6 block text-gray-800" for="shipping"
+          >Shipping address</label
+        >
+        <input
+          class="block border border-gray-300 rounded mt-2 px-4 py-2 focus:outline-none focus:border-blue-300"
+          type="text"
+          id="shipping"
+        />
+        <label class="mt-6 block text-gray-800">Continent</label>
+        <div class="relative">
+          <div
+            :class="{'border-blue-300': open}"
+            class="cursor-pointer block border border-gray-300 rounded mt-2 px-4 py-2"
+            x-on:click="open = !open"
+            x-text="continents[selected]"
+            class="mt-6"
+          ></div>
+          <ul
+            x-show="open"
+            class="border border-gray-300 rounded py-2 absolute bg-white w-3/4 mt-4 shadow"
+          >
+            <template x-for="(continent, index) in continents" :key="continent">
+              <li
+                x-on:click="selected = index; open = false"
+                class="py-2 px-4 hover:bg-gray-200 cursor-pointer"
+                x-text="continent"
+              ></li>
+            </template>
+          </ul>
+        </div>
+        <div x-show="selected === 1" class="mt-6">
+          <input
+            x-model.boolean="company"
+            type="checkbox"
+            id="company"
+            class=""
+          />
+          <label class="ml-2 text-gray-800" for="company">Company</label>
+        </div>
+        <div x-show="selected === 1 && company === true">
+          <label class="mt-6 block text-gray-800" for="vat">Vat number</label>
+          <input
+            class="block border border-gray-300 rounded mt-2 px-4 py-2 focus:outline-none focus:border-blue-300"
+            type="text"
+            id="vat"
+          />
+        </div>
+        <div class="mt-6 text-gray-600">
+          <dl>
+            <div class="flex justify-between">
+              <dl class="">Subtotal</dl>
+              <dd x-text="`$${Number(price / 100).toFixed(2)}`"></dd>
+            </div>
+            <div class="flex justify-between">
+              <dl>VAT</dl>
+              <dd
+                x-text="`$${Number((selected === 1 ? price * vat : 0) / 100).toFixed(2)}`"
+              ></dd>
+            </div>
+            <hr class="mt-6" />
+            <div class="flex justify-between mt-6 text-gray-900 text-lg">
+              <dl>Total</dl>
+              <dd
+                x-text="`$${Number((price + (selected === 1 && price * vat)) / 100).toFixed(2)}`"
+              ></dd>
+            </div>
+          </dl>
+        </div>
+        <div class="flex mt-6">
+          <button class="bg-blue-600 text-blue-100 rounded px-4 py-2">
+            Order
+          </button>
+          <button class="ml-2 px-4 py-2 text-blue-600">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

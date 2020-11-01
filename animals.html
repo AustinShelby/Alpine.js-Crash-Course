@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.2/dist/alpine.min.js"
+      defer
+    ></script>
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <title>Filtering Example</title>
+  </head>
+  <body>
+    <div class="flex w-full items-start justify-center h-screen bg-gray-100">
+      <div
+        class="mt-32"
+        x-data="{
+          animals: [
+            {legs: 2, name: 'Duck'},
+            {legs: 2, name: 'Kangaroo'},
+            {legs: 4, name: 'Bear'},
+            {legs: 4, name: 'Dog'},
+            {legs: 4, name: 'Cow'},
+            {legs: 8, name: 'Spider'},
+          ],
+          query: 0
+        }"
+      >
+        <h1 class="text-xl text-gray-900 mb-8">Animal Search</h1>
+        <label class="block text-gray-800" for="legs">Minimum legs</label>
+        <input
+          class="block border border-gray-300 rounded mt-2 px-4 py-2 focus:outline-none focus:border-blue-300"
+          id="legs"
+          type="number"
+          x-model.number="query"
+          min="0"
+        />
+        <hr class="mt-4" />
+        <ul>
+          <template
+            x-for="animal in animals.filter(animal => animal.legs >= query)"
+            :key="animal"
+          >
+            <li class="mt-4 px-4 py-2 rounded shadow bg-white">
+              <p x-text="animal.name"></p>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
